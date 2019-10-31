@@ -69,7 +69,7 @@ def selectDischargeCycles(db):
 db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
 print("Connected to Oracle ADW")
 
-x_data, y_data = selectDischargeCyclesByBatteryName(db)
+x_data, y_data = selectDischargeCycles(db)
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
 x_test = x_norm[32988]
