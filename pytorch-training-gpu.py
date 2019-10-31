@@ -51,8 +51,6 @@ def selectDischargeCycles(db):
         FROM battery_battery 
         LEFT JOIN battery_cycle ON battery_battery.battery_id = battery_cycle.battery_id
         LEFT JOIN battery_discharge_data ON battery_discharge_data.cycle_id = battery_cycle.cycle_id
-        WHERE
-            m_name = :batteryName
     """
     cur.execute(statement)
     res = cur.fetchall()
