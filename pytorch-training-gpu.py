@@ -107,7 +107,7 @@ criterion = torch.nn.MSELoss()# Mean Squared Loss
 l_rate = 0.5
 optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
 
-epochs = 5000
+epochs = 50000
 for epoch in range(epochs):
     pctComplete = epoch / epochs * 100
     print ("{:.2f}".format(pctComplete)+"%", end="\r")
