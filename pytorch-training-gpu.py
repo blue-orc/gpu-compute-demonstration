@@ -46,6 +46,9 @@ x_test = x_norm[32988]
 y_test = y_norm[32988]
 print('ok')
 
+print("Loading data and model on to GPU")
+device = torch.device("cuda:0")
+
 class LinearRegression(torch.nn.Module):
 
     def __init__(self, input_dim, output_dim):
@@ -64,12 +67,14 @@ class LinearRegression(torch.nn.Module):
 input_dim = 7
 output_dim = 1
 
-x_tensor = torch.Tensor(x_norm)
-y_tensor = torch.Tensor(y_norm)
+x_tensor = torch.Tensor(x_norm).to(device)
+y_tensor = torch.Tensor(y_norm).to(device)
 y_ok = y_tensor.unsqueeze(1)
 x_test_tensor = torch.Tensor(x_test)
 
 model = LinearRegression(input_dim,output_dim)
+model = torch.nn.DataParallel(model)
+model.to(device)
 criterion = torch.nn.MSELoss()# Mean Squared Loss
 l_rate = 0.5
 optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
