@@ -36,10 +36,40 @@ def selectDischargeCyclesByBatteryName(db, batteryName):
     y_data = npRes[:,7].astype(np.float32)
     return x_data, y_data
 
+def selectDischargeCycles(db):
+    cur = db.cursor()
+    statement = """
+        SELECT 
+            battery_discharge_data.current_load,
+            battery_discharge_data.current_measured,
+            battery_discharge_data.temperature_measured,
+            battery_discharge_data.voltage_load,
+            battery_discharge_data.voltage_measured,
+            battery_discharge_data.m_time,
+            battery_discharge_data.m_capacity,
+            battery_cycle.pct_rul
+        FROM battery_battery 
+        LEFT JOIN battery_cycle ON battery_battery.battery_id = battery_cycle.battery_id
+        LEFT JOIN battery_discharge_data ON battery_discharge_data.cycle_id = battery_cycle.cycle_id
+        WHERE
+            m_name = :batteryName
+    """
+    cur.execute(statement)
+    res = cur.fetchall()
+    if len(res) == 0:
+        return []
+
+    npRes = np.array(res).astype(np.float32)
+    #this line clears out nan values, need to fix in DB
+    npRes =  npRes[~np.isnan(npRes).any(axis=1)]
+    x_data = npRes[:, :7].astype(np.float32)
+    y_data = npRes[:,7].astype(np.float32)
+    return x_data, y_data
+
 db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
 print("Connected to Oracle ADW")
 
-x_data, y_data = selectDischargeCyclesByBatteryName(db, 'B0005')
+x_data, y_data = selectDischargeCyclesByBatteryName(db)
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
 x_test = x_norm[32988]
