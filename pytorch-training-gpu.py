@@ -70,8 +70,8 @@ print("Connected to Oracle ADW")
 x_data, y_data = selectDischargeCycles(db)
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
-x_test = x_norm[32988]
-y_test = y_norm[32988]
+x_test = x_norm[65499]
+y_test = y_norm[65499]
 print('ok')
 
 print("Loading data and model on to GPU")
