@@ -92,6 +92,6 @@ for epoch in range(epochs):
     print(loss.item())
 
 predicted = model(x_test_tensor)
-print('predicted: ' + predicted.item())
+print('predicted: ' + str(predicted.item()))
 print('actual: ' + str(y_test))
 print('fin')
